@@ -17,26 +17,26 @@ except IOError:
 
 
 install_requires = [
-    "tensorflow>=2.0,<2.5;python_version<'3.8'",
-    "tensorflow>=2.2,<2.5;python_version>='3.8'",
+    #"tensorflow>=2.0,<2.5;python_version<'3.8'",
+    #"tensorflow>=2.2,<2.5;python_version>='3.8'",
     's3fs>=0.2.2,<0.5',
-    'mlblocks>=0.4.1,<0.5',
-    'mlprimitives>=0.3.2,<0.4',
-    'numpy>=1.17.4,<1.19',
-    'pandas>=1,<2',
+    #'mlblocks>=0.4.1,<0.5',
+    #'mlprimitives>=0.3.2,<0.4',
+    #'numpy>=1.17.4,<1.19',
+    #'pandas>=1,<2',
     'scikit-learn>=0.22,<1.2',
     'tabulate>=0.8.3,<0.9',
-    'numba>=0.48,<0.52',
+    #'numba>=0.48,<0.52',
     'pyts>=0.9,<0.11',
     'azure-cognitiveservices-anomalydetector>=0.3,<0.4',
     'xlsxwriter>=1.3.6,<1.4',
 
     # fix conflict
-    'h5py<2.11.0,>=2.10.0',
+    #'h5py<2.11.0,>=2.10.0',
     'protobuf<4',
     
     # fails on python 3.6
-    'opencv-python<4.7',
+    #'opencv-python<4.7',
 ]
 
 setup_requires = [
@@ -63,8 +63,8 @@ development_requires = [
     'pydata-sphinx-theme<0.5',
     'autodocsumm>=0.1.10,<1',
     'markupsafe<2.1.0',
-    'ipython>=6.5,<7.5',
-    'Jinja2>=2,<3',
+    #'ipython>=6.5,<7.5',
+    #'Jinja2>=2,<3',
 
     # style check
     'flake8>=3.7.7,<4',
@@ -120,7 +120,7 @@ setup(
     long_description_content_type='text/markdown',
     name='orion-ml',
     packages=find_packages(include=['orion', 'orion.*']),
-    python_requires='>=3.6,<3.9',
+    #python_requires='>=3.6,<3.9',
     setup_requires=setup_requires,
     test_suite='tests',
     tests_require=tests_require,

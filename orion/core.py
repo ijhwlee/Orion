@@ -8,15 +8,40 @@ import json
 import logging
 import os
 import pickle
+import sys
 from typing import List, Union
 
 import pandas as pd
 from mlblocks import MLPipeline
+from mlblocks import discovery
 
 from orion.evaluation import CONTEXTUAL_METRICS as METRICS
 
 LOGGER = logging.getLogger(__name__)
 
+_ORION_PIPELINES_PATHS = [
+    os.path.join(os.getcwd(), 'mlpipelines'),
+    os.path.join(sys.prefix, 'orion'),
+    os.path.join(sys.prefix, 'orion', 'pipelines'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'aer'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'arima'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'azure'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'dense_autoencoder'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'lstm_autoencoder'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'lstm_dynamic_threshold'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'tadgan'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'vae'),
+    os.path.join(os.getcwd(), 'mlblocks_pipelines'),    # legacy
+    os.path.join(sys.prefix, 'mlblocks_pipelines'),    # legacy
+]
+_ORION_PRIMITIVES_PATHS = [
+    os.path.join(os.getcwd(), 'primitives'),
+    os.path.join(sys.prefix, 'orion'),
+    os.path.join(sys.prefix, 'orion', 'primitives'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'primitives', 'jsons'),
+    os.path.join(os.getcwd(), 'mlblocks_primitives'),    # legacy
+    os.path.join(sys.prefix, 'mlblocks_primitives'),    # legacy
+]
 
 class Orion:
     """Orion Class.
@@ -45,12 +70,36 @@ class Orion:
 
     DEFAULT_PIPELINE = 'lstm_dynamic_threshold'
 
+    def add_orion_primitives_paths(self):
+        for path in _ORION_PRIMITIVES_PATHS:
+            #print("[DEBUG-hwlee]orion.core.add_orion_primitives_paths: path = {0}".format(path))
+            if os.path.isdir(path):
+                discovery.add_primitives_path(path)
+                #print("[DEBUG-hwlee]orion.core.add_orion_primitives_paths: path({0}) is ADDED".format(path))
+
     def _get_mlpipeline(self):
-        pipeline = self._pipeline
-        if isinstance(pipeline, str) and os.path.isfile(pipeline):
-            with open(pipeline) as json_file:
+        pipeline = None
+        pipeline_name = self._pipeline
+        if isinstance(pipeline_name, str) and os.path.isfile(pipeline_name):
+            with open(pipeline_name) as json_file:
                 pipeline = json.load(json_file)
 
+        if pipeline is None:
+            for base_path in _ORION_PIPELINES_PATHS:
+                # first check if there is json file with given name
+                filename = pipeline_name + '.json'
+                json_path = os.path.join(base_path, filename)
+
+                #print("[DEBUG-hwlee]Orion.core._get_mlpipeline: json_path = {0}".format(json_path))
+                #print("[DEBUG-hwlee]Orion.core._get_mlpipeline: os.path.isfile(json_path) = {0}".format(os.path.isfile(json_path)))
+                if os.path.isfile(json_path):
+                    with open(json_path) as json_file:
+                        pipeline = json.load(json_file)
+                    break
+
+        if pipeline is None:
+            print("[DEBUG-hwlee]Critical Error not possible to load pipeline at {0}: {1}".format(__file__, 76))
+        self.add_orion_primitives_paths()
         mlpipeline = MLPipeline(pipeline)
         if self._hyperparameters:
             mlpipeline.set_hyperparameters(self._hyperparameters)

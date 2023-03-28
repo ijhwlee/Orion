@@ -23,14 +23,7 @@ _ORION_PIPELINES_PATHS = [
     os.path.join(os.getcwd(), 'mlpipelines'),
     os.path.join(sys.prefix, 'orion'),
     os.path.join(sys.prefix, 'orion', 'pipelines'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'aer'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'arima'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'azure'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'dense_autoencoder'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'lstm_autoencoder'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'lstm_dynamic_threshold'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'tadgan'),
-    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines', 'verified', 'vae'),
+    os.path.join(sys.prefix, 'Lib', 'site-packages', 'orion', 'pipelines'),
     os.path.join(os.getcwd(), 'mlblocks_pipelines'),    # legacy
     os.path.join(sys.prefix, 'mlblocks_pipelines'),    # legacy
 ]
@@ -90,8 +83,8 @@ class Orion:
                 filename = pipeline_name + '.json'
                 json_path = os.path.join(base_path, filename)
 
-                #print("[DEBUG-hwlee]Orion.core._get_mlpipeline: json_path = {0}".format(json_path))
-                #print("[DEBUG-hwlee]Orion.core._get_mlpipeline: os.path.isfile(json_path) = {0}".format(os.path.isfile(json_path)))
+                print("[DEBUG-hwlee]Orion.core._get_mlpipeline: json_path = {0}".format(json_path))
+                print("[DEBUG-hwlee]Orion.core._get_mlpipeline: os.path.isfile(json_path) = {0}".format(os.path.isfile(json_path)))
                 if os.path.isfile(json_path):
                     with open(json_path) as json_file:
                         pipeline = json.load(json_file)

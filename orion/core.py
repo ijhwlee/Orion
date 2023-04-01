@@ -80,7 +80,7 @@ class Orion:
         if pipeline is None:
             for base_path in _ORION_PIPELINES_PATHS:
                 # first check if there is json file with given name
-                filename = pipeline_name + '.json'
+                filename = pipeline_name+'.json'
                 json_path = os.path.join(base_path, filename)
 
                 print("[DEBUG-hwlee]Orion.core._get_mlpipeline: json_path = {0}".format(json_path))
